@@ -21,7 +21,7 @@ export function ExtensionDescription({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'
+      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
     >
       <h2 className='text-xl font-semibold text-white mb-6'>
         About this extension
@@ -63,7 +63,7 @@ export function ExtensionDescription({
             </div>
           ))}
         </div>
-        <p className='text-xs text-gray-500 mt-3'>
+        <p className='text-xs text-gray-500 mt-2'>
           This extension requires these permissions to function properly. You
           can review and manage permissions in your browser settings.
         </p>

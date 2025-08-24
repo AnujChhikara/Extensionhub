@@ -36,8 +36,8 @@ export function HeroSection() {
             </h1>
 
             <p className='text-lg text-gray-400 max-w-lg'>
-              Find underrated, emerging, and niche Chrome extensions that
-              enhance your browsing experience. No signup required.
+              Discover great Chrome extensions that got overlooked but deserve
+              your attention—uncover powerful tools hidden from the spotlight.
             </p>
 
             <div className='flex flex-col sm:flex-row gap-3'>

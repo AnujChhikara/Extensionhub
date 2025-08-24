@@ -21,7 +21,7 @@ export function Button({
   disabled = false,
 }: ButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none';
+    'inline-flex items-center cursor-pointer justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none';
 
   const variants = {
     primary: 'bg-white text-black hover:bg-gray-100 border border-neutral-900',

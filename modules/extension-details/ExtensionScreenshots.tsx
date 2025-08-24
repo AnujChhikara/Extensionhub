@@ -52,9 +52,9 @@ export function ExtensionScreenshots({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'
+      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
     >
-      <div className='flex items-center justify-between mb-6'>
+      <div className='flex items-center justify-between mb-4'>
         <h2 className='text-xl font-semibold text-white'>Screenshots</h2>
         <div className='flex items-center space-x-2'>
           <span className='text-sm text-gray-400'>
@@ -64,12 +64,12 @@ export function ExtensionScreenshots({
       </div>
 
       {/* Main Screenshot */}
-      <div className='relative mb-4'>
+      <div className='relative mb-3'>
         <div className='aspect-video bg-white/5 rounded-lg overflow-hidden'>
           <div className='w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center'>
             <div className='text-center'>
-              <div className='w-16 h-16 bg-white/10 rounded-lg mx-auto mb-4 flex items-center justify-center'>
-                <Maximize2 className='h-8 w-8 text-white' />
+              <div className='w-12 h-12 bg-white/10 rounded-lg mx-auto mb-3 flex items-center justify-center'>
+                <Maximize2 className='h-6 w-6 text-white' />
               </div>
               <p className='text-white font-medium'>
                 Screenshot {currentIndex + 1}

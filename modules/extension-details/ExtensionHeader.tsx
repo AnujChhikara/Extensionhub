@@ -44,25 +44,25 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
       {/* Back Button */}
       <Link
         href='/extensions'
-        className='inline-flex items-center text-gray-400 hover:text-white mb-6 transition-colors'
+        className='inline-flex items-center text-gray-400 hover:text-white mb-4 transition-colors'
       >
         <ArrowLeft className='h-4 w-4 mr-2' />
         Back to Extensions
       </Link>
 
       {/* Main Header */}
-      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-8'>
-        <div className='flex flex-col lg:flex-row lg:items-start gap-6'>
+      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'>
+        <div className='flex flex-col lg:flex-row lg:items-start gap-4'>
           {/* Logo */}
           <div className='flex-shrink-0'>
-            <div className='w-24 h-24 rounded-xl bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-2xl'>
+            <div className='w-20 h-20 rounded-lg bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-lg'>
               {extension.name.charAt(0).toUpperCase()}
             </div>
           </div>
 
           {/* Content */}
           <div className='flex-1 min-w-0'>
-            <div className='flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4'>
+            <div className='flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3'>
               <div className='flex-1'>
                 <h1 className='text-3xl font-bold text-white mb-2'>
                   {extension.name}
@@ -134,9 +134,9 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className='flex flex-col space-y-3 lg:flex-shrink-0'>
+              <div className='flex flex-col space-y-2 lg:flex-shrink-0'>
                 <Button
-                  size='lg'
+                  size='md'
                   className='bg-white text-black hover:bg-gray-100 w-full lg:w-auto'
                   onClick={() =>
                     window.open(extension.chromeStoreUrl, '_blank')
@@ -146,7 +146,7 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
                   Install Extension
                 </Button>
                 <Button
-                  size='lg'
+                  size='md'
                   variant='outline'
                   className='border-white/20 text-white hover:bg-white hover:text-black w-full lg:w-auto'
                 >

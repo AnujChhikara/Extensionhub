@@ -50,14 +50,14 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
-      className='space-y-6'
+      className='space-y-4'
     >
-      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'>
-        <h3 className='text-lg font-semibold text-white mb-4'>Actions</h3>
+      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Actions</h3>
 
-        <div className='space-y-3'>
+        <div className='space-y-2'>
           <Button
-            size='lg'
+            size='md'
             variant='outline'
             className={`w-full ${isBookmarked ? 'bg-white text-black' : ''}`}
             onClick={() => setIsBookmarked(!isBookmarked)}
@@ -69,7 +69,7 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
           </Button>
 
           <Button
-            size='lg'
+            size='md'
             variant='outline'
             className='w-full'
             onClick={handleShare}
@@ -79,7 +79,7 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
           </Button>
 
           <Button
-            size='lg'
+            size='md'
             variant='outline'
             className='w-full'
             onClick={handleReport}
@@ -90,12 +90,12 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
         </div>
       </div>
 
-      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'>
-        <h3 className='text-lg font-semibold text-white mb-4'>Links</h3>
+      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Links</h3>
 
-        <div className='space-y-3'>
+        <div className='space-y-2'>
           <Button
-            size='lg'
+            size='md'
             variant='outline'
             className='w-full'
             onClick={() => window.open(extension.chromeStoreUrl, '_blank')}
@@ -106,7 +106,7 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
 
           {extension.website && (
             <Button
-              size='lg'
+              size='md'
               variant='outline'
               className='w-full'
               onClick={() => window.open(extension.website, '_blank')}
@@ -118,7 +118,7 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
 
           {extension.github && (
             <Button
-              size='lg'
+              size='md'
               variant='outline'
               className='w-full'
               onClick={() => window.open(extension.github, '_blank')}
@@ -130,25 +130,25 @@ export function ExtensionActions({ extensionId }: ExtensionActionsProps) {
         </div>
       </div>
 
-      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'>
-        <h3 className='text-lg font-semibold text-white mb-4'>Developer</h3>
+      <div className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'>
+        <h3 className='text-lg font-semibold text-white mb-3'>Developer</h3>
 
-        <div className='flex items-center space-x-3 mb-4'>
-          <div className='w-12 h-12 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white font-semibold'>
+        <div className='flex items-center space-x-3 mb-3'>
+          <div className='w-10 h-10 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white font-semibold text-sm'>
             {extension.developer.name.charAt(0)}
           </div>
           <div>
             <div className='flex items-center space-x-2'>
-              <span className='text-white font-medium'>
+              <span className='text-white font-medium text-md'>
                 {extension.developer.name}
               </span>
               {extension.developer.verified && (
-                <span className='text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full'>
+                <span className='text-xs bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-full'>
                   Verified
                 </span>
               )}
             </div>
-            <p className='text-gray-400 text-sm'>Extension Developer</p>
+            <p className='text-gray-400 text-md'>Extension Developer</p>
           </div>
         </div>
 

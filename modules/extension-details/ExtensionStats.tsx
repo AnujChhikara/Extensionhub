@@ -34,7 +34,7 @@ export function ExtensionStats({ extensionId }: ExtensionStatsProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'
+      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
     >
       <h2 className='text-xl font-semibold text-white mb-6'>Statistics</h2>
 
