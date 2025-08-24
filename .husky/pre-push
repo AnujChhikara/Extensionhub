@@ -1,0 +1,4 @@
+echo "🔍 Running type check..."
+pnpm type-check
+
+echo "✅ Type check passed!"

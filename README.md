@@ -29,6 +29,48 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Development
+
+### Code Quality
+
+This project uses ESLint, Prettier, and Husky for code quality:
+
+```bash
+# Run all checks
+pnpm check
+
+# Lint code
+pnpm lint
+
+# Format code
+pnpm format
+
+# Type check
+pnpm type-check
+```
+
+### Git Hooks
+
+The project uses Husky to run pre-commit hooks:
+
+- **Pre-commit**: Runs ESLint and Prettier on staged files
+- **Commit-msg**: Validates commit message format (conventional commits)
+- **Pre-push**: Runs TypeScript type checking
+
+### Commit Message Format
+
+Use conventional commit format:
+
+```bash
+feat: add new feature
+fix: resolve bug
+docs: update documentation
+style: formatting changes
+refactor: code refactoring
+test: add tests
+chore: maintenance tasks
+```
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
