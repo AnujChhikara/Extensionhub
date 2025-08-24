@@ -1,8 +1,16 @@
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 import { UserDashboard } from '@/modules/dashboard';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/sign-in');
+  }
+
   return (
-    <div className='min-h-screen bg-black'>
+    <div className='min-h-screen bg-black pt-16'>
       <UserDashboard />
     </div>
   );
