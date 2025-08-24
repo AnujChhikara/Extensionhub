@@ -354,3 +354,7 @@ export const extensionData = [
     github: null,
   },
 ];
+
+export function getExtensionById(id: string) {
+  return extensionData.find(extension => extension.id === id);
+}
