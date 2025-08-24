@@ -1,14 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
-import { SignInModal } from '@/components/ui/SignInModal';
 import { motion } from 'framer-motion';
-import { Github, Moon, User } from 'lucide-react';
+import { Github, Moon, User, LogOut } from 'lucide-react';
+import { SignInButton, SignOutButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export function Navigation() {
-  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+  const { isSignedIn, user } = useUser();
 
   return (
     <nav className='fixed top-0 left-0 right-0 z-50 backdrop-blur-md'>
@@ -79,22 +78,32 @@ export function Navigation() {
             <button className='p-2 text-gray-300 hover:text-white transition-colors'>
               <Moon className='h-4 w-4' />
             </button>
-            <Button
-              size='sm'
-              variant='primary'
-              onClick={() => setIsSignInModalOpen(true)}
-            >
-              <User className='mr-1 h-3 w-3' />
-              Sign In
-            </Button>
+            {isSignedIn ? (
+              <div className='flex items-center space-x-3'>
+                <Link href='/dashboard'>
+                  <Button size='sm' variant='outline'>
+                    <User className='mr-1 h-3 w-3' />
+                    Dashboard
+                  </Button>
+                </Link>
+                <SignOutButton>
+                  <Button size='sm' variant='primary'>
+                    <LogOut className='mr-1 h-3 w-3' />
+                    Sign Out
+                  </Button>
+                </SignOutButton>
+              </div>
+            ) : (
+              <SignInButton mode='modal'>
+                <Button size='sm' variant='primary'>
+                  <User className='mr-1 h-3 w-3' />
+                  Sign In
+                </Button>
+              </SignInButton>
+            )}
           </motion.div>
         </div>
       </div>
-
-      <SignInModal
-        isOpen={isSignInModalOpen}
-        onClose={() => setIsSignInModalOpen(false)}
-      />
     </nav>
   );
 }

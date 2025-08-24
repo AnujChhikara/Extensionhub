@@ -47,10 +47,10 @@ export function ErrorPage({
           transition={{ duration: 0.6, delay: 0.2 }}
           className='mb-8'
         >
-          <div className='text-8xl font-bold text-transparent bg-gradient-to-r from-neutral-900 via-gray-200 to-neutral-900 bg-clip-text mb-4'>
+          <div className='text-8xl font-bold text-transparent bg-gradient-to-r from-gray-800 via-gray-300 to-gray-800 bg-clip-text mb-4'>
             {code}
           </div>
-          <div className='w-24 h-1 bg-gradient-to-r from-transparent via-white to-transparent mx-auto'></div>
+          <div className='w-24 h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent mx-auto'></div>
         </motion.div>
 
         {/* Title */}
