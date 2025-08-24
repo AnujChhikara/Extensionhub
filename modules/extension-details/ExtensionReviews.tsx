@@ -15,29 +15,32 @@ const mockReviews = [
     id: 1,
     user: 'John Doe',
     rating: 5,
-    comment: 'Excellent extension! Really helps with my productivity. The interface is clean and intuitive.',
+    comment:
+      'Excellent extension! Really helps with my productivity. The interface is clean and intuitive.',
     date: '2024-01-15',
     helpful: 12,
-    verified: true
+    verified: true,
   },
   {
     id: 2,
     user: 'Sarah Wilson',
     rating: 4,
-    comment: 'Great functionality, but could use a few more features. Overall very satisfied.',
+    comment:
+      'Great functionality, but could use a few more features. Overall very satisfied.',
     date: '2024-01-10',
     helpful: 8,
-    verified: false
+    verified: false,
   },
   {
     id: 3,
     user: 'Mike Johnson',
     rating: 5,
-    comment: 'This extension has completely transformed how I work. Highly recommended!',
+    comment:
+      'This extension has completely transformed how I work. Highly recommended!',
     date: '2024-01-08',
     helpful: 15,
-    verified: true
-  }
+    verified: true,
+  },
 ];
 
 export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
@@ -52,8 +55,11 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
 
   const handleSubmitReview = () => {
     if (userRating === 0) return;
-    
-    console.log('Submitting review:', { rating: userRating, comment: userComment });
+
+    console.log('Submitting review:', {
+      rating: userRating,
+      comment: userComment,
+    });
     setUserRating(0);
     setUserComment('');
     setShowReviewForm(false);
@@ -64,17 +70,17 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.4 }}
-      className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6"
+      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-6'
     >
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-white">Reviews</h2>
+      <div className='flex items-center justify-between mb-6'>
+        <h2 className='text-xl font-semibold text-white'>Reviews</h2>
         <Button
-          size="sm"
-          variant="outline"
-          className="border-white/20 text-white hover:bg-white hover:text-black"
+          size='sm'
+          variant='outline'
+          className='border-white/20 text-white hover:bg-white hover:text-black'
           onClick={() => setShowReviewForm(!showReviewForm)}
         >
-          <MessageCircle className="h-4 w-4 mr-2" />
+          <MessageCircle className='h-4 w-4 mr-2' />
           Write Review
         </Button>
       </div>
@@ -85,19 +91,21 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10"
+          className='mb-6 p-4 bg-white/5 rounded-lg border border-white/10'
         >
-          <h3 className="text-lg font-medium text-white mb-4">Write a Review</h3>
-          
+          <h3 className='text-lg font-medium text-white mb-4'>
+            Write a Review
+          </h3>
+
           {/* Rating Stars */}
-          <div className="flex items-center space-x-2 mb-4">
-            <span className="text-gray-300">Rating:</span>
-            <div className="flex items-center space-x-1">
-              {[1, 2, 3, 4, 5].map((star) => (
+          <div className='flex items-center space-x-2 mb-4'>
+            <span className='text-gray-300'>Rating:</span>
+            <div className='flex items-center space-x-1'>
+              {[1, 2, 3, 4, 5].map(star => (
                 <button
                   key={star}
                   onClick={() => setUserRating(star)}
-                  className="focus:outline-none"
+                  className='focus:outline-none'
                 >
                   <Star
                     className={`h-6 w-6 ${
@@ -114,28 +122,28 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
           {/* Comment */}
           <textarea
             value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-            placeholder="Share your experience with this extension..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white resize-none"
+            onChange={e => setUserComment(e.target.value)}
+            placeholder='Share your experience with this extension...'
+            className='w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white resize-none'
             rows={4}
           />
 
-          <div className="flex items-center justify-end space-x-3 mt-4">
+          <div className='flex items-center justify-end space-x-3 mt-4'>
             <Button
-              size="sm"
-              variant="ghost"
-              className="text-gray-400 hover:text-white"
+              size='sm'
+              variant='ghost'
+              className='text-gray-400 hover:text-white'
               onClick={() => setShowReviewForm(false)}
             >
               Cancel
             </Button>
             <Button
-              size="sm"
-              className="bg-white text-black hover:bg-gray-100"
+              size='sm'
+              className='bg-white text-black hover:bg-gray-100'
               onClick={handleSubmitReview}
               disabled={userRating === 0}
             >
-              <Send className="h-4 w-4 mr-2" />
+              <Send className='h-4 w-4 mr-2' />
               Submit Review
             </Button>
           </div>
@@ -143,25 +151,30 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
       )}
 
       {/* Reviews List */}
-      <div className="space-y-6">
-        {mockReviews.map((review) => (
-          <div key={review.id} className="border-b border-white/10 pb-6 last:border-b-0">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-medium">
+      <div className='space-y-6'>
+        {mockReviews.map(review => (
+          <div
+            key={review.id}
+            className='border-b border-white/10 pb-6 last:border-b-0'
+          >
+            <div className='flex items-start justify-between mb-3'>
+              <div className='flex items-center space-x-3'>
+                <div className='w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-sm font-medium'>
                   {review.user.charAt(0)}
                 </div>
                 <div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-white font-medium">{review.user}</span>
+                  <div className='flex items-center space-x-2'>
+                    <span className='text-white font-medium'>
+                      {review.user}
+                    </span>
                     {review.verified && (
-                      <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">
+                      <span className='text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full'>
                         Verified
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <div className="flex items-center space-x-1">
+                  <div className='flex items-center space-x-2 mt-1'>
+                    <div className='flex items-center space-x-1'>
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
@@ -173,24 +186,24 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
                         />
                       ))}
                     </div>
-                    <span className="text-xs text-gray-500">
+                    <span className='text-xs text-gray-500'>
                       {new Date(review.date).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <p className="text-gray-300 text-sm leading-relaxed mb-3">
+
+            <p className='text-gray-300 text-sm leading-relaxed mb-3'>
               {review.comment}
             </p>
-            
-            <div className="flex items-center space-x-4">
-              <button className="flex items-center space-x-1 text-gray-400 hover:text-white transition-colors">
-                <ThumbsUp className="h-3 w-3" />
-                <span className="text-xs">Helpful ({review.helpful})</span>
+
+            <div className='flex items-center space-x-4'>
+              <button className='flex items-center space-x-1 text-gray-400 hover:text-white transition-colors'>
+                <ThumbsUp className='h-3 w-3' />
+                <span className='text-xs'>Helpful ({review.helpful})</span>
               </button>
-              <button className="text-gray-400 hover:text-white transition-colors text-xs">
+              <button className='text-gray-400 hover:text-white transition-colors text-xs'>
                 Reply
               </button>
             </div>

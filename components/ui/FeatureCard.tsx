@@ -30,23 +30,21 @@ export function FeatureCard({
         className
       )}
     >
-      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative z-10">
-        <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-black">
+      <div className='absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+
+      <div className='relative z-10'>
+        <div className='mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-black'>
           {icon}
         </div>
-        
-        <h3 className="mb-2 text-lg font-semibold text-white group-hover:text-gray-200 transition-colors duration-300">
+
+        <h3 className='mb-2 text-lg font-semibold text-white group-hover:text-gray-200 transition-colors duration-300'>
           {title}
         </h3>
-        
-        <p className="text-gray-300 leading-relaxed text-sm">
-          {description}
-        </p>
+
+        <p className='text-gray-300 leading-relaxed text-sm'>{description}</p>
       </div>
-      
-      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+      <div className='absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
     </motion.div>
   );
 }

@@ -20,11 +20,13 @@ export function Button({
   onClick,
   disabled = false,
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none';
-  
+  const baseStyles =
+    'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none';
+
   const variants = {
     primary: 'bg-white text-black hover:bg-gray-100 border border-neutral-900',
-    secondary: 'bg-black text-white hover:bg-neutral-900 border border-neutral-900',
+    secondary:
+      'bg-black text-white hover:bg-neutral-900 border border-neutral-900',
     outline: 'border border-neutral-900 text-white hover:bg-neutral-900',
     ghost: 'text-white hover:bg-neutral-900/10',
   };

@@ -8,10 +8,8 @@ interface ExtensionPageProps {
 
 export default function ExtensionPage({ params }: ExtensionPageProps) {
   return (
-    <div className="min-h-screen bg-black">
-  
+    <div className='min-h-screen bg-black'>
       <ExtensionDetailsPage extensionId={params.id} />
-
     </div>
   );
 }
