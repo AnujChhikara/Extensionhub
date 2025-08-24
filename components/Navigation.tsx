@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
-import { motion } from 'framer-motion';
-import { Github, Moon, User, LogOut } from 'lucide-react';
 import { SignInButton, SignOutButton, useUser } from '@clerk/nextjs';
+import { motion } from 'framer-motion';
+import { Github, LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 
 export function Navigation() {
-  const { isSignedIn, user } = useUser();
+  const { isSignedIn } = useUser();
 
   return (
     <nav className='fixed top-0 left-0 right-0 z-50 backdrop-blur-md'>
@@ -40,30 +40,25 @@ export function Navigation() {
             >
               Extensions
             </Link>
-            <a
-              href='#features'
+
+            <Link
+              href='/terms'
               className='text-gray-300 hover:text-white transition-colors text-sm'
             >
-              Features
-            </a>
-            <a
-              href='#pricing'
+              Terms
+            </Link>
+            <Link
+              href='/privacy'
               className='text-gray-300 hover:text-white transition-colors text-sm'
             >
-              Pricing
-            </a>
-            <a
-              href='#roadmap'
+              Privacy
+            </Link>
+            <Link
+              href='/about'
               className='text-gray-300 hover:text-white transition-colors text-sm'
             >
-              Roadmap
-            </a>
-            <a
-              href='#faq'
-              className='text-gray-300 hover:text-white transition-colors text-sm'
-            >
-              FAQ
-            </a>
+              About
+            </Link>
           </motion.div>
 
           <motion.div
@@ -72,12 +67,17 @@ export function Navigation() {
             className='flex items-center space-x-4'
           >
             <div className='hidden md:flex items-center space-x-1 text-gray-300'>
-              <Github className='h-4 w-4' />
-              <span className='text-sm'>2.1k</span>
+              <a
+                href='https://github.com/AnujChhikara/Extensionhub'
+                target='_blank'
+              >
+                <Button size='sm' variant='outline'>
+                  <Github className='h-4 w-4' />
+                  <span className='text-sm'>2.1k</span>
+                </Button>
+              </a>
             </div>
-            <button className='p-2 text-gray-300 hover:text-white transition-colors'>
-              <Moon className='h-4 w-4' />
-            </button>
+
             {isSignedIn ? (
               <div className='flex items-center space-x-3'>
                 <Link href='/dashboard'>
