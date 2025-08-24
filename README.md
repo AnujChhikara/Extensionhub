@@ -1,78 +1,275 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ExtensionSpot - Chrome Extension Marketplace
 
-## Getting Started
+A modern, community-driven Chrome extension marketplace built with Next.js 15, TypeScript, and Tailwind CSS. Discover underrated, emerging, and niche Chrome extensions that often get overlooked on mainstream platforms.
 
-First, run the development server:
+![ExtensionSpot](https://img.shields.io/badge/ExtensionSpot-Chrome%20Extension%20Marketplace-blue)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38B2AC)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Features
+
+- **🔍 Smart Discovery**: Find hidden gems and underrated extensions
+- **⭐ Community Reviews**: Real user ratings and detailed feedback
+- **📱 Responsive Design**: Works perfectly on desktop and mobile
+- **🚀 Modern Tech Stack**: Built with Next.js 15, TypeScript, and Tailwind CSS
+- **🎨 Beautiful UI**: Clean, minimalist design with smooth animations
+- **🔐 Authentication**: Google and GitHub sign-in options
+- **📊 Developer Dashboard**: Analytics and extension management tools
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/extensionhub.git
+   cd extensionhub
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Start the development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **UI Components**: [Radix UI](https://www.radix-ui.com/)
+- **Package Manager**: [pnpm](https://pnpm.io/)
+
+## 📁 Project Structure
+
+```
+extensionhub/
+├── app/                    # Next.js App Router pages
+│   ├── dashboard/         # User dashboard
+│   ├── extensions/        # Extension listing & details
+│   └── layout.tsx         # Root layout
+├── components/            # Reusable UI components
+│   ├── ui/               # Base UI components
+│   └── Navigation.tsx    # Main navigation
+├── modules/              # Feature modules
+│   ├── dashboard/        # Dashboard components
+│   ├── extension-page/   # Extension listing
+│   ├── extension-details/ # Extension details
+│   └── landing-page/     # Landing page components
+├── __mock_data__/        # Mock data for development
+├── types/                # TypeScript type definitions
+└── lib/                  # Utility functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Development
-
-### Code Quality
-
-This project uses ESLint, Prettier, and Husky for code quality:
+### Available Scripts
 
 ```bash
-# Run all checks
-pnpm check
+# Development
+pnpm dev          # Start development server
+pnpm build        # Build for production
+pnpm start        # Start production server
 
-# Lint code
-pnpm lint
-
-# Format code
-pnpm format
-
-# Type check
-pnpm type-check
+# Code Quality
+pnpm check        # Run all quality checks
+pnpm lint         # Run ESLint
+pnpm lint:fix     # Fix ESLint issues automatically
+pnpm format       # Format code with Prettier
+pnpm format:check # Check code formatting
+pnpm type-check   # Run TypeScript type checking
 ```
+
+### Code Quality Tools
+
+This project uses a comprehensive set of tools to maintain code quality:
+
+- **ESLint**: Code linting with TypeScript and React rules
+- **Prettier**: Code formatting with consistent style
+- **Husky**: Git hooks for automated quality checks
+- **lint-staged**: Run linters only on staged files
+- **TypeScript**: Static type checking
 
 ### Git Hooks
 
-The project uses Husky to run pre-commit hooks:
+The project uses Husky to enforce code quality at every commit:
 
-- **Pre-commit**: Runs ESLint and Prettier on staged files
-- **Commit-msg**: Validates commit message format (conventional commits)
-- **Pre-push**: Runs TypeScript type checking
+- **Pre-commit**:
+  - Runs ESLint and Prettier on staged files
+  - Automatically fixes formatting issues
+  - Prevents commits with linting errors
+
+- **Commit-msg**:
+  - Validates commit message format
+  - Enforces conventional commit standards
+  - Ensures consistent commit history
+
+- **Pre-push**:
+  - Runs TypeScript type checking
+  - Prevents pushing code with type errors
+  - Ensures production-ready code
 
 ### Commit Message Format
 
-Use conventional commit format:
+We use [Conventional Commits](https://www.conventionalcommits.org/) for consistent commit messages:
 
 ```bash
-feat: add new feature
-fix: resolve bug
-docs: update documentation
-style: formatting changes
-refactor: code refactoring
-test: add tests
-chore: maintenance tasks
+# Feature additions
+feat: add user authentication system
+feat(auth): implement Google OAuth
+
+# Bug fixes
+fix: resolve navigation issue
+fix(ui): fix button alignment on mobile
+
+# Documentation
+docs: update API documentation
+docs(readme): add installation instructions
+
+# Code style changes
+style: format code with prettier
+style(components): update button styling
+
+# Code refactoring
+refactor: simplify authentication logic
+refactor(utils): extract common functions
+
+# Testing
+test: add unit tests for auth module
+test(components): test button interactions
+
+# Maintenance tasks
+chore: update dependencies
+chore(deps): upgrade Next.js to v15
 ```
 
-## Deploy on Vercel
+### Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project follows a modular architecture:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **`app/`**: Next.js App Router pages and layouts
+- **`components/`**: Reusable UI components
+- **`modules/`**: Feature-specific components and logic
+- **`types/`**: TypeScript type definitions
+- **`lib/`**: Utility functions and helpers
+- **`__mock_data__/`**: Mock data for development
+
+### Adding New Features
+
+1. **Create feature module** in `modules/`
+2. **Add TypeScript types** in `types/`
+3. **Create UI components** in `components/`
+4. **Add mock data** if needed
+5. **Update documentation**
+6. **Write tests** (when testing framework is added)
+
+### Code Style Guidelines
+
+- Use TypeScript for all new code
+- Follow ESLint and Prettier configurations
+- Use functional components with hooks
+- Implement proper error handling
+- Add meaningful comments for complex logic
+- Use semantic HTML and accessibility features
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+The easiest way to deploy ExtensionSpot is using the [Vercel Platform](https://vercel.com/new):
+
+1. **Push your code** to GitHub
+2. **Import your project** in Vercel
+3. **Deploy automatically** with zero configuration
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/extensionhub)
+
+### Other Platforms
+
+ExtensionSpot can be deployed to any platform that supports Next.js:
+
+- **Netlify**: Use the Next.js build command
+- **Railway**: Connect your GitHub repository
+- **DigitalOcean App Platform**: Deploy with App Spec
+- **AWS Amplify**: Connect your repository
+
+### Environment Variables
+
+Create a `.env.local` file for local development:
+
+```bash
+# Authentication (when implemented)
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+NEXT_PUBLIC_GITHUB_CLIENT_ID=your_github_client_id
+
+# Database (when implemented)
+DATABASE_URL=your_database_url
+
+# API Keys (when implemented)
+NEXT_PUBLIC_API_URL=your_api_url
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our contributing guidelines:
+
+### How to Contribute
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes** following our code style guidelines
+4. **Run quality checks**: `pnpm check`
+5. **Commit your changes**: Use conventional commit format
+6. **Push to your branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request**
+
+### Development Setup
+
+1. **Install dependencies**: `pnpm install`
+2. **Start development server**: `pnpm dev`
+3. **Run quality checks**: `pnpm check`
+4. **Make your changes** and test thoroughly
+
+### Code of Conduct
+
+We are committed to providing a welcoming and inspiring community for all. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) to keep our approachable and respectable.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) for the amazing framework
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+- [Framer Motion](https://www.framer.com/motion/) for smooth animations
+- [Radix UI](https://www.radix-ui.com/) for accessible UI components
+- [Lucide](https://lucide.dev/) for beautiful icons
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/extensionhub/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/extensionhub/discussions)
+- **Email**: support@extensionspot.com
+
+---
+
+Made with ❤️ by the ExtensionSpot team
