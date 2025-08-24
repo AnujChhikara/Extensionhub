@@ -1,0 +1,132 @@
+# Cursor Rules for ExtensionSpot Project
+
+## PROJECT DESCRIPTION
+ExtensionSpot is a modern marketplace and discovery platform for Chrome extensions. The project's goal is to help users easily find and explore underrated, emerging, and niche Chrome extensions that are often overlooked on mainstream platforms. Its purpose is to empower developers to showcase innovative extensions, enhance extension visibility, and enable community-driven discovery through detailed analytics, authentic reviews, and intelligent ranking algorithms.
+
+## AI AGENT ROLE
+- You are a senior software engineer with great experience in TypeScript and fullstack development using Next.js, MongoDB, and related modern web technologies.
+- You are a great problem solver and able to architect scalable, secure, and performant solutions.
+- You ensure all code adheres to best practices and solves complex challenges with clean, modular implementations.
+
+## Project Overview
+This is a Next.js 15 project using TypeScript, Tailwind CSS, MongoDB, and pnpm as the package manager. The platform serves as a Chrome extension marketplace with discovery features, analytics, and community-driven reviews.
+
+## Package Manager
+- Use `pnpm` for all package management operations
+- Never use `npm` or `yarn` commands
+- Always run `pnpm install` after adding new dependencies
+
+## CODING STYLE AND STRUCTURE
+- Write code using a modular and iterative approach, favoring reusable components and utilities.
+- Use descriptive variable and function names, employing auxiliary verbs where appropriate to clarify intent.
+- Produce concise, technical TypeScript code with well-commented and accurate, real-world examples.
+- Organize code by feature and responsibility, separating concerns for scalability and maintainability.
+
+## Code Style & Standards
+
+### TypeScript
+- Use strict TypeScript configuration
+- Prefer explicit types over `any`
+- Use interfaces for object shapes
+- Use type aliases for complex types
+- Always include proper type annotations for function parameters and return types
+
+### React/Next.js
+- Use functional components with hooks
+- Prefer `const` over `let` for component declarations
+- Use proper TypeScript interfaces for props
+- Follow Next.js 15 App Router conventions
+- Use `use client` directive only when necessary
+- Prefer server components by default
+
+### Styling
+- Use Tailwind CSS for styling
+- Follow utility-first approach
+- Use `clsx` or `tailwind-merge` for conditional classes
+- Prefer Tailwind classes over custom CSS
+- Use CSS variables for theme values when needed
+
+### File Organization
+- Keep components in the `components/` directory
+- Use PascalCase for component files
+- Use kebab-case for utility files
+- Group related components in subdirectories
+- Keep pages in the `app/` directory following Next.js 15 conventions
+- Organize by feature: extensions, reviews, analytics, user-management, etc.
+
+### Naming Conventions
+- Components: PascalCase (e.g., `ExtensionCard.tsx`, `ReviewForm.tsx`)
+- Files: kebab-case (e.g., `extension-utils.ts`, `analytics-service.ts`)
+- Variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+- Functions: camelCase
+
+## Error Handling
+- Implement robust error boundaries in both frontend (React components) and backend (API routes).
+- Log errors using both server-side and client-side logging solutions for effective debugging.
+- Provide user-friendly, actionable error messages wherever failures may occur.
+- Gracefully handle network or service outages, giving users clear feedback and fallback options.
+
+## Development Workflow
+
+### Commands
+- `pnpm dev` - Start development server with Turbopack
+- `pnpm build` - Build for production with Turbopack
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+
+### Code Quality
+- Always run linting before committing
+- Fix all TypeScript errors before pushing
+- Use meaningful commit messages
+- Keep functions small and focused
+- Add JSDoc comments for complex functions
+
+### Performance
+- Use Next.js Image component for images
+- Implement proper loading states
+- Use React.memo for expensive components
+- Optimize bundle size with dynamic imports when appropriate
+- Use proper caching strategies
+- Monitor and test memory usage and performance for key flows to avoid leaks and ensure a smooth user experience
+
+## Testing
+- Write comprehensive unit tests for utility functions, business logic, and core components using frameworks such as Jest or React Testing Library.
+- Implement end-to-end (E2E) tests for all critical features—including extension submission, search/discovery, and review flows—using Cypress or Playwright.
+- Ensure compatibility and functionality across different Chrome versions and platforms.
+- Monitor and test memory usage and performance for key flows to avoid leaks and ensure a smooth user experience.
+
+## Security
+- Enforce a strict Content Security Policy (CSP) across all served pages and API endpoints.
+- Sanitize all user inputs and output to prevent injection attacks and XSS vulnerabilities.
+- Handle sensitive data—such as passwords and API keys—with proper encryption and never expose private data in client-side code.
+- Follow Chrome extension and modern web security best practices, including permission minimization, least privilege, and periodic audits.
+- Implement proper Cross-Origin Resource Sharing (CORS) handling on all APIs and resource endpoints.
+- Never commit API keys or secrets
+- Use environment variables for configuration
+- Validate all user inputs
+- Follow OWASP security guidelines
+
+## Dependencies
+- Prefer stable, well-maintained packages
+- Check bundle size impact before adding new dependencies
+- Use exact versions for critical dependencies
+- Keep dependencies up to date
+
+## Git
+- Use conventional commit messages
+- Keep commits atomic and focused
+- Write descriptive commit messages
+- Use feature branches for new development
+
+## AI Assistant Guidelines
+- Always suggest pnpm commands, never npm or yarn
+- Prefer TypeScript solutions over JavaScript
+- Suggest Tailwind CSS classes for styling
+- Follow Next.js 15 best practices
+- Consider performance implications of suggestions
+- Provide context and explanations for code changes
+- Focus on Chrome extension marketplace functionality
+- Consider scalability for extension discovery and analytics features
+- Prioritize security for user data and extension handling
+- Suggest modular, reusable components for extension cards, review systems, and analytics dashboards
