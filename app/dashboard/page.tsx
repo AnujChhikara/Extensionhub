@@ -73,7 +73,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className='pt-16'>
+    <div>
       <UserDashboard />
     </div>
   );

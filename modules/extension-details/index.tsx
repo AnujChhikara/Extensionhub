@@ -15,7 +15,7 @@ export function ExtensionDetailsPage({
   extensionId,
 }: ExtensionDetailsPageProps) {
   return (
-    <main className='pt-16 pb-12 px-4 sm:px-6 md:px-16'>
+    <main className='pt-24 pb-12 px-4 sm:px-6 md:px-16 bg-background min-h-screen'>
       <div className='max-w-6xl mx-auto'>
         <ExtensionHeader extensionId={extensionId} />
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6'>
