@@ -1,7 +1,13 @@
-import { prisma } from './db';
+import { getPrismaClient } from './db';
 
 export async function testDatabaseConnection() {
   try {
+    const prisma = getPrismaClient();
+    if (!prisma) {
+      console.error('❌ Prisma client not available');
+      return false;
+    }
+
     await prisma.$connect();
     console.log('✅ Database connection successful!');
     return true;
@@ -9,12 +15,24 @@ export async function testDatabaseConnection() {
     console.error('❌ Database connection failed:', error);
     return false;
   } finally {
-    await prisma.$disconnect();
+    const prisma = getPrismaClient();
+    if (prisma) {
+      await prisma.$disconnect();
+    }
   }
 }
 
 export async function getDatabaseInfo() {
   try {
+    const prisma = getPrismaClient();
+    if (!prisma) {
+      return {
+        status: 'error',
+        message: 'Prisma client not available',
+        timestamp: new Date().toISOString(),
+      };
+    }
+
     await prisma.$connect();
     return {
       status: 'connected',
@@ -30,6 +48,9 @@ export async function getDatabaseInfo() {
       timestamp: new Date().toISOString(),
     };
   } finally {
-    await prisma.$disconnect();
+    const prisma = getPrismaClient();
+    if (prisma) {
+      await prisma.$disconnect();
+    }
   }
 }
