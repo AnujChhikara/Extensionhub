@@ -216,16 +216,52 @@ ExtensionSpot can be deployed to any platform that supports Next.js:
 Create a `.env.local` file for local development:
 
 ```bash
-# Authentication (when implemented)
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
-NEXT_PUBLIC_GITHUB_CLIENT_ID=your_github_client_id
+# Database (PostgreSQL with NeonDB)
+DATABASE_URL="postgresql://username:password@host:port/database?schema=public"
 
-# Database (when implemented)
-DATABASE_URL=your_database_url
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 
-# API Keys (when implemented)
-NEXT_PUBLIC_API_URL=your_api_url
+
 ```
+
+### Database Setup
+
+This project uses **PostgreSQL** with **Prisma ORM** and **NeonDB** for the database.
+
+#### 1. Database Setup
+
+1. **Create a NeonDB account** at [neon.tech](https://neon.tech)
+2. **Create a new project** and get your database connection string
+3. **Add the DATABASE_URL** to your `.env.local` file
+
+#### 2. Database Commands
+
+```bash
+# Generate Prisma client
+pnpm db:generate
+
+# Push schema to database
+pnpm db:push
+
+# Open Prisma Studio (database GUI)
+pnpm db:studio
+```
+
+#### 3. Database Schema
+
+The database includes the following main entities:
+
+#### 4. Health Check
+
+Test your database connection at:
+
+- `GET /api/health` - Database connection status
 
 ## 🤝 Contributing
 
