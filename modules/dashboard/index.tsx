@@ -8,7 +8,7 @@ import { DashboardSettings } from './DashboardSettings';
 
 export function UserDashboard() {
   return (
-    <main className='pt-28 pb-16 px-4 sm:px-6 md:px-32'>
+    <main className='pt-24 pb-16 px-4 sm:px-6 md:px-32 bg-background min-h-screen'>
       <div className='max-w-7xl mx-auto'>
         {/* Main Content Grid */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>

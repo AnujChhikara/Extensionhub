@@ -5,9 +5,15 @@ import { SignInButton, SignOutButton, useUser } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
 import { Github, LogOut, User } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export function Navigation() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <nav className='fixed top-0 left-0 right-0 z-50 backdrop-blur-md'>
@@ -71,35 +77,42 @@ export function Navigation() {
                 href='https://github.com/AnujChhikara/Extensionhub'
                 target='_blank'
               >
-                <Button size='sm' variant='outline'>
+                <Button
+                  size='sm'
+                  variant='outline'
+                  className='border-neutral-700'
+                >
                   <Github className='h-4 w-4' />
-                  <span className='text-sm'>2.1k</span>
                 </Button>
               </a>
             </div>
 
-            {isSignedIn ? (
-              <div className='flex items-center space-x-3'>
-                <Link href='/dashboard'>
-                  <Button size='sm' variant='outline'>
-                    <User className='mr-1 h-3 w-3' />
-                    Dashboard
-                  </Button>
-                </Link>
-                <SignOutButton>
+            {mounted && isLoaded ? (
+              isSignedIn ? (
+                <div className='flex items-center space-x-3'>
+                  <Link href='/dashboard'>
+                    <Button size='sm' variant='outline'>
+                      <User className='mr-1 h-3 w-3' />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <SignOutButton>
+                    <Button size='sm' variant='primary'>
+                      <LogOut className='mr-1 h-3 w-3' />
+                      Sign Out
+                    </Button>
+                  </SignOutButton>
+                </div>
+              ) : (
+                <SignInButton mode='modal'>
                   <Button size='sm' variant='primary'>
-                    <LogOut className='mr-1 h-3 w-3' />
-                    Sign Out
+                    <User className='mr-1 h-3 w-3' />
+                    Sign In
                   </Button>
-                </SignOutButton>
-              </div>
+                </SignInButton>
+              )
             ) : (
-              <SignInButton mode='modal'>
-                <Button size='sm' variant='primary'>
-                  <User className='mr-1 h-3 w-3' />
-                  Sign In
-                </Button>
-              </SignInButton>
+              <div className='w-20 h-8 bg-gray-800 rounded animate-pulse'></div>
             )}
           </motion.div>
         </div>

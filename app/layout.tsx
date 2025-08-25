@@ -1,10 +1,10 @@
+import { Footer } from '@/components/Footer';
+import { Navigation } from '@/components/Navigation';
+import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
-import { ScrollToTop } from '@/components/ScrollToTop';
-import { ClerkProvider } from '@clerk/nextjs';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -114,7 +114,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+        elements: {
+          rootBox: 'mt-24',
+        },
+      }}
+    >
       <html lang='en'>
         <head>
           <link rel='icon' href='/favicon.ico' />
@@ -173,10 +180,10 @@ export default function RootLayout({
           />
         </head>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
         >
-          <ScrollToTop />
           <Navigation />
+
           {children}
           <Footer />
         </body>

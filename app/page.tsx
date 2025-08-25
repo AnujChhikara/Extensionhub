@@ -78,7 +78,7 @@ export default function HomePage() {
   return (
     <div className='min-h-screen bg-black relative overflow-hidden'>
       <Spotlight
-        className='-top-40 left-0 md:-top-20 md:left-60'
+        className='-top-40 left-0 md:-top-80 md:left-10 '
         fill='white'
       />
       <LandingPage />
