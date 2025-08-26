@@ -1,5 +1,6 @@
 import { Footer } from '@/components/Footer';
 import { Navigation } from '@/components/Navigation';
+import { QueryProvider } from '@/components/providers/QueryProvider';
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import type { Metadata } from 'next';
@@ -182,10 +183,12 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
         >
-          <Navigation />
+          <QueryProvider>
+            <Navigation />
 
-          {children}
-          <Footer />
+            {children}
+            <Footer />
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
