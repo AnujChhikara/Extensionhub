@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const ReviewSchema = z
   .object({
@@ -14,3 +14,4 @@ export const ReviewSchema = z
   .extend(BaseSchema);
 
 export type Review = z.infer<typeof ReviewSchema>;
+export type ReviewDocument = Review & AppwriteDocument;

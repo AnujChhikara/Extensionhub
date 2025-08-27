@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const SpotlightSchema = z
   .object({
@@ -9,3 +9,4 @@ export const SpotlightSchema = z
   .extend(BaseSchema);
 
 export type Spotlight = z.infer<typeof SpotlightSchema>;
+export type SpotlightDocument = Spotlight & AppwriteDocument;

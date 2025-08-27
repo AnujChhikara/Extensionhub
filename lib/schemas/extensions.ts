@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const ExtensionSchema = z
   .object({
@@ -11,7 +11,7 @@ export const ExtensionSchema = z
     tags: z.array(z.string().max(32)).optional(),
     labels: z.array(z.string().max(32)).optional(),
     media: z.array(z.url()).optional(),
-    permissions: z.array(z.string().max(64)).optional(),
+    appPermissions: z.array(z.string().max(64)).optional(),
     developer: z.string().max(256).optional(),
     userId: z.string().max(256).optional(),
     isSuspended: z.boolean().optional().default(false),
@@ -20,3 +20,4 @@ export const ExtensionSchema = z
   .extend(BaseSchema);
 
 export type Extension = z.infer<typeof ExtensionSchema>;
+export type ExtensionDocument = Extension & AppwriteDocument;

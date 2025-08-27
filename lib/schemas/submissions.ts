@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const SubmissionSchema = z
   .object({
@@ -15,3 +15,4 @@ export const SubmissionSchema = z
   .extend(BaseSchema);
 
 export type Submission = z.infer<typeof SubmissionSchema>;
+export type SubmissionDocument = Submission & AppwriteDocument;

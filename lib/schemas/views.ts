@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const ViewSchema = z
   .object({
@@ -9,3 +9,4 @@ export const ViewSchema = z
   .extend(BaseSchema);
 
 export type View = z.infer<typeof ViewSchema>;
+export type ViewDocument = View & AppwriteDocument;

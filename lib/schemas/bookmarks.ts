@@ -1,5 +1,5 @@
 import z from 'zod';
-import { BaseSchema } from './util';
+import { AppwriteDocument, BaseSchema } from './_util';
 
 export const BookmarkSchema = z
   .object({
@@ -9,3 +9,4 @@ export const BookmarkSchema = z
   .extend(BaseSchema);
 
 export type Bookmark = z.infer<typeof BookmarkSchema>;
+export type BookMarkDocument = Bookmark & AppwriteDocument;
