@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { testDatabaseConnection, getDatabaseInfo } from '@/lib/db-test';
 
 export async function GET(request: NextRequest) {
   try {
-    const dbConnected = await testDatabaseConnection();
-    const dbInfo = await getDatabaseInfo();
-
     return NextResponse.json({
       status: 'ok',
       timestamp: new Date().toISOString(),
       database: {
-        connected: dbConnected,
-        info: dbInfo,
+        info: 'database not setup!',
       },
     });
   } catch (error) {
