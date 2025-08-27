@@ -309,3 +309,85 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Made with ❤️ by the ExtensionSpot team
+
+## Appwrite Setup
+
+Set the following environment variables in your deployment or `.env` (do not commit secrets):
+
+```
+APPWRITE_ENDPOINT=
+APPWRITE_PROJECT_ID=
+APPWRITE_PROJECT_NAME=
+APPWRITE_API_KEY=
+APPWRITE_DATABASE_ID=
+```
+
+# Appwrite Database Schema
+
+Create a database and the following collections in Appwrite:
+
+---
+
+## `extensions` collection
+
+- `name` (string, max 128, required)
+- `description` (string, max 2000, required)
+- `extensionLink` (url, required)
+- `websiteLink` (url, optional)
+- `githubLink` (url, optional)
+- `tags` (string[], max 32 per item, optional)
+- `labels` (string[], max 32 per item, optional)
+- `media` (url[], optional)
+- `permissions` (string[], max 64 per item, optional)
+- `userId` (string, max 256, optional)
+- `developer` (string, max 256, optional)
+- `isSuspended` (boolean)
+- `isDeleted` (boolean)
+
+---
+
+## `spotlight` collection
+
+- `extensionId` (string, max 256, required)
+- `date` (datetime, required)
+
+---
+
+## `user_bookmarks` collection
+
+- `userId` (string, max 256, required)
+- `extensionId` (string, max 256, required)
+
+---
+
+## `views` collection
+
+- `userId` (string, max 256, optional)
+- `extensionId` (string, max 256, required)
+- `timestamp` (datetime, required)
+
+---
+
+## `reviews` collection
+
+- `userId` (string, max 256, required)
+- `extensionId` (string, max 256, required)
+- `vote` (enum: `UP` \| `DOWN`, optional)
+- `stars` (integer, min 1, max 5, optional)
+- `message` (string, max 1000, optional)
+- `isSuspended` (boolean)
+- `isDeleted` (boolean)
+
+---
+
+## `submissions` collection
+
+- `email` (email, max 256, required)
+- `extensionLink` (url, required)
+- `githubLink` (url, optional)
+- `websiteLink` (url, optional)
+- `message` (string, max 1000, optional)
+- `status` (enum: `PENDING` \| `ACCEPTED` \| `REJECTED`, required)
+- `feedback` (string, max 1000, optional)
+
+Health check endpoint will verify connectivity with Appwrite at `/api/health`.
