@@ -15,7 +15,10 @@ export async function createReview(data: Review) {
 }
 
 export async function getReview(id: string) {
-  return database.getDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id);
+  return database.listDocuments<ReviewDocument>(DATABASE_ID, REVIEWS, [
+    Query.equal('$id', id),
+    Query.limit(1),
+  ]);
 }
 
 // skipping pagination in listing

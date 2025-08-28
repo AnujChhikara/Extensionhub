@@ -1,5 +1,31 @@
 export const VALIDATION_ERROR = 'Error validating inputs, please try again!';
 
+export const EXTENSION_ALREADY_EXISTS = 'Extension already exists!';
+export const EXTENSION_ADDED = 'Extension added!';
+export const ERROR_ADDING_EXTENSION = 'Error adding extension!';
+export const EXTENSION_NOT_FOUND = 'Extension not found!';
+export const ERROR_UPDATING_EXTENSION = 'Error updating extension!';
+export const EXTENSION_UPDATED = 'Extension updated!';
+export const ERROR_REMOVING_EXTENSION = 'Error removing extension!';
+export const EXTENSION_REMOVED = 'Extension removed!';
+export const ERROR_SUSPENDING_EXTENSION = 'Error suspending extension';
+export const EXTENSION_SUSPENDED = 'Extension suspended!';
+export const EXTENSIONS_FETCHED = 'All extensions fetched!';
+export const ERROR_LISTING_EXTENSIONS = 'Error listing extensions, try again!';
+
+export const REVIEW_ALREADY_EXISTS = 'Review already exists!';
+export const ERROR_ADDING_REVIEW = 'Error adding review!';
+export const EXTENSION_REVIEW_ADDED = 'Review for the extension added!';
+export const ERROR_REMOVING_REVIEW = 'Error removing review!';
+export const EXTENSION_REVIEW_REMOVED = 'Review for extension removed!';
+export const REVIEW_NOT_FOUND = 'Review not found!';
+export const EXTENSION_REVIEW_UPDATED = 'Review updated for the extension!';
+export const ERROR_UPDATING_REVIEW = 'Error updating review!';
+export const REVIEWS_FETCHED = 'All reviews fetched!';
+export const ERROR_LISTING_REVIEWS = 'Error listing reviews!';
+export const REVIEW_SUSPENDED = 'Review suspended!';
+export const ERROR_SUSPENDING_REVIEW = 'Error suspending review!';
+
 export const SPOTLIGHT_ALREADY_EXISTS = 'Spotlight for date already exists!';
 export const ERROR_ADDING_SPOTLIGHT = 'Error adding spotlight, try again!';
 export const EXTENSION_ADDED_TO_SPOTLIGHT = 'Extension added to spotlight!';

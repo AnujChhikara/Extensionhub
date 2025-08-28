@@ -14,8 +14,11 @@ export async function createExtension(data: Extension) {
   );
 }
 
-export async function getExtension(id: string) {
-  return database.getDocument<ExtensionDocument>(DATABASE_ID, EXTENSIONS, id);
+export async function getExtensionById(id: string) {
+  return database.listDocuments<ExtensionDocument>(DATABASE_ID, EXTENSIONS, [
+    Query.equal('$id', id),
+    Query.limit(1),
+  ]);
 }
 
 // skipping pagination in listing
