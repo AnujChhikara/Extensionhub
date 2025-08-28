@@ -49,10 +49,8 @@ export const listExtensionViews = async ({
 }) => {
   try {
     const views = await viewRepo.listViewForExtensionId(extensionId);
-    console.log('views: ', views);
     return actionResponse(EXTENSION_VIEWS_FETCHED, !!views, views);
   } catch (error) {
-    console.error(' error list view: ', error);
     return actionResponse(ERROR_LISTING_VIEWS);
   }
 };

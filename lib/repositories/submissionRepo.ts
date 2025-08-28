@@ -21,6 +21,13 @@ export async function listAllSubmissions() {
   ]);
 }
 
+export async function getSubmissionById(id: string) {
+  return database.listDocuments<SubmissionDocument>(DATABASE_ID, SUBMISSIONS, [
+    Query.equal('$id', id),
+    Query.limit(1),
+  ]);
+}
+
 export async function updateStatus(id: string, data: Partial<Submission>) {
   return database.updateDocument<SubmissionDocument>(
     DATABASE_ID,

@@ -5,12 +5,15 @@ export const SubmissionSchema = z
   .object({
     email: z.email(),
     message: z.string().max(1000).optional(),
-    status: z.enum(['PENDING', 'ACCEPTED', 'REJECTED']),
+    status: z
+      .enum(['PENDING', 'ACCEPTED', 'REJECTED'])
+      .optional()
+      .default('PENDING'),
     extensionLink: z.url(),
     githubLink: z.url().optional(),
     websiteLink: z.url().optional(),
     feedback: z.string().max(500).optional(),
-    userId: z.string().max(256).optional(),
+    userId: z.string().max(256),
   })
   .extend(BaseSchema.shape);
 
