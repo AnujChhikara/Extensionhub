@@ -17,14 +17,22 @@ export async function createBookmark(data: Bookmark) {
 export async function listBookmarkForExtension(extensionId: string) {
   return database.listDocuments<BookMarkDocument>(DATABASE_ID, BOOKMARKS, [
     Query.equal('extensionId', extensionId),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 
 export async function listBookmarkForUser(userId: string) {
   return database.listDocuments<BookMarkDocument>(DATABASE_ID, BOOKMARKS, [
     Query.equal('userId', userId),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
+  ]);
+}
+
+export async function getBookmark(userId: string, extensionId: string) {
+  return database.listDocuments(DATABASE_ID, BOOKMARKS, [
+    Query.equal('userId', userId),
+    Query.equal('extensionId', extensionId),
+    Query.limit(1),
   ]);
 }
 

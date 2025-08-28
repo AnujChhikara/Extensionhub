@@ -6,7 +6,7 @@ export const BookmarkSchema = z
     userId: z.string().max(256),
     extensionId: z.string().max(256),
   })
-  .extend(BaseSchema);
+  .extend(BaseSchema.shape);
 
 export type Bookmark = z.infer<typeof BookmarkSchema>;
 export type BookMarkDocument = Bookmark & AppwriteDocument;

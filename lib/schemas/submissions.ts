@@ -12,7 +12,7 @@ export const SubmissionSchema = z
     feedback: z.string().max(500).optional(),
     userId: z.string().max(256).optional(),
   })
-  .extend(BaseSchema);
+  .extend(BaseSchema.shape);
 
 export type Submission = z.infer<typeof SubmissionSchema>;
 export type SubmissionDocument = Submission & AppwriteDocument;

@@ -23,7 +23,7 @@ export async function listExtensions() {
   return database.listDocuments<ExtensionDocument>(DATABASE_ID, EXTENSIONS, [
     Query.equal('isDeleted', false),
     Query.equal('isSuspended', false),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 

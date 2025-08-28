@@ -24,7 +24,7 @@ export async function getSpotlightForDate(date: Date) {
 // skipping pagination for listing submissions
 export async function listAllSpotlights() {
   return database.listDocuments<SpotlightDocument>(DATABASE_ID, SPOTLIGHTS, [
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 

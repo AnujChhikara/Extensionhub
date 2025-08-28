@@ -24,7 +24,7 @@ export async function listReviewForExtensions(extensionId: string) {
     Query.equal('extensionId', extensionId),
     Query.equal('isDeleted', false),
     Query.equal('isSuspended', false),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 
@@ -33,7 +33,7 @@ export async function listReviewForUsers(userId: string) {
     Query.equal('userId', userId),
     Query.equal('isDeleted', false),
     Query.equal('isSuspended', false),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 

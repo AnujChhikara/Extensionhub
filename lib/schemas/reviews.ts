@@ -11,7 +11,7 @@ export const ReviewSchema = z
     isSuspended: z.boolean().optional().default(false),
     isDeleted: z.boolean().optional().default(false),
   })
-  .extend(BaseSchema);
+  .extend(BaseSchema.shape);
 
 export type Review = z.infer<typeof ReviewSchema>;
 export type ReviewDocument = Review & AppwriteDocument;

@@ -17,13 +17,27 @@ export async function createView(data: View) {
 export async function listViewForExtensionId(extensionId: string) {
   return database.listDocuments<ViewDocument>(DATABASE_ID, VIEWS, [
     Query.equal('extensionId', extensionId),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 
 export async function listViewForUserId(userId: string) {
   return database.listDocuments<ViewDocument>(DATABASE_ID, VIEWS, [
     Query.equal('userId', userId),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
+  ]);
+}
+
+export async function getView({
+  extensionId,
+  userId,
+}: {
+  extensionId: string;
+  userId: string;
+}) {
+  return database.listDocuments<ViewDocument>(DATABASE_ID, VIEWS, [
+    Query.equal('userId', userId),
+    Query.equal('extensionId', extensionId),
+    Query.limit(1),
   ]);
 }
