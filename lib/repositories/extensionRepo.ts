@@ -21,6 +21,13 @@ export async function getExtensionById(id: string) {
   ]);
 }
 
+export async function getExtensionByLink(extensionLink: string) {
+  return database.listDocuments<ExtensionDocument>(DATABASE_ID, EXTENSIONS, [
+    Query.equal('extensionLink', extensionLink),
+    Query.limit(1),
+  ]);
+}
+
 // skipping pagination in listing
 export async function listExtensions() {
   return database.listDocuments<ExtensionDocument>(DATABASE_ID, EXTENSIONS, [
@@ -55,5 +62,14 @@ export async function suspendExtension(id: string) {
     EXTENSIONS,
     id,
     { isSuspended: true }
+  );
+}
+
+export async function unSuspendExtension(id: string) {
+  return database.updateDocument<ExtensionDocument>(
+    DATABASE_ID,
+    EXTENSIONS,
+    id,
+    { isSuspended: false }
   );
 }

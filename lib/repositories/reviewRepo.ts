@@ -21,6 +21,17 @@ export async function getReview(id: string) {
   ]);
 }
 
+export async function getReviewForUserAndExtension(
+  extensionId: string,
+  userId: string
+) {
+  return database.listDocuments<ReviewDocument>(DATABASE_ID, REVIEWS, [
+    Query.equal('extensionId', extensionId),
+    Query.equal('userId', userId),
+    Query.limit(1),
+  ]);
+}
+
 // skipping pagination in listing
 export async function listReviewForExtensions(extensionId: string) {
   return database.listDocuments<ReviewDocument>(DATABASE_ID, REVIEWS, [
@@ -59,5 +70,11 @@ export async function deleteReview(id: string) {
 export async function suspendReview(id: string) {
   return database.updateDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id, {
     isSuspended: true,
+  });
+}
+
+export async function unSuspendReview(id: string) {
+  return database.updateDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id, {
+    isSuspended: false,
   });
 }

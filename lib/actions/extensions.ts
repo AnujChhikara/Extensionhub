@@ -20,13 +20,17 @@ import { ExtensionSchema } from '@/lib/schemas/extensions';
 import { actionResponse } from '@/lib/utils';
 
 interface addExtensionDTO {
-  extensionId: string;
-  userId: string;
-  vote: 'UP' | 'DOWN';
-  stars: number;
-  message: string;
-  isSuspended: boolean;
-  isDeleted: boolean;
+  name: string;
+  description: string;
+  extensionLink: string;
+  websiteLink?: string;
+  githubLink?: string;
+  tags?: string[];
+  labels?: string[];
+  media?: string[];
+  appPermissions?: string[];
+  developer?: string;
+  userId?: string;
 }
 
 export const addExtension = async (data: addExtensionDTO) => {
@@ -36,7 +40,7 @@ export const addExtension = async (data: addExtensionDTO) => {
   }
 
   try {
-    const existing = await extensionRepo.getExtensionById(data.extensionId);
+    const existing = await extensionRepo.getExtensionByLink(data.extensionLink);
     if (existing.documents.length > 0) {
       return actionResponse(EXTENSION_ALREADY_EXISTS);
     }
@@ -95,6 +99,19 @@ export const suspendExtension = async (extensionId: string) => {
     }
 
     return actionResponse(EXTENSION_SUSPENDED, !!suspended, suspended);
+  } catch (error) {
+    return actionResponse(ERROR_SUSPENDING_EXTENSION);
+  }
+};
+
+export const unSuspendExtension = async (extensionId: string) => {
+  try {
+    const unSuspended = await extensionRepo.unSuspendExtension(extensionId);
+    if (!unSuspended) {
+      return actionResponse(ERROR_SUSPENDING_EXTENSION);
+    }
+
+    return actionResponse(EXTENSION_SUSPENDED, !!unSuspended, unSuspended);
   } catch (error) {
     return actionResponse(ERROR_SUSPENDING_EXTENSION);
   }

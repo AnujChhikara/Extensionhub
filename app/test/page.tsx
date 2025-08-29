@@ -70,7 +70,6 @@ export default function TestPage() {
   const [submissionMessage, setSubmissionMessage] = useState('');
 
   // Extensions states
-  const [newExtId, setNewExtId] = useState('');
   const [newExtName, setNewExtName] = useState('');
   const [newExtDescription, setNewExtDescription] = useState('');
   const [newExtLink, setNewExtLink] = useState('');
@@ -291,7 +290,7 @@ export default function TestPage() {
 
   // Extensions handlers
   const handleCreateExtension = async () => {
-    if (!newExtId || !newExtName || !newExtDescription || !newExtLink) {
+    if (!newExtName || !newExtDescription || !newExtLink) {
       setExtensionsMessage(
         'extensionId, name, description, extensionLink required'
       );
@@ -301,14 +300,7 @@ export default function TestPage() {
     setExtensionsMessage('Creating extension...');
     try {
       const result = await addExtension({
-        extensionId: newExtId,
         userId: newExtOwnerUserId,
-        vote: 'UP',
-        stars: 5,
-        message: 'init',
-        isSuspended: false,
-        isDeleted: false,
-        // schema fields below (extra keys will be stripped by zod but present for repo checks)
         name: newExtName,
         description: newExtDescription,
         extensionLink: newExtLink,
@@ -943,13 +935,6 @@ export default function TestPage() {
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
             <div className='space-y-4'>
               <div className='grid grid-cols-1 gap-3'>
-                <input
-                  type='text'
-                  placeholder='extensionId'
-                  value={newExtId}
-                  onChange={e => setNewExtId(e.target.value)}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-md'
-                />
                 <input
                   type='text'
                   placeholder='name'

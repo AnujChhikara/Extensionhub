@@ -36,7 +36,10 @@ export const addReviewForExtension = async (data: addReviewDTO) => {
   }
 
   try {
-    const existing = await reviewRepo.getReview(data.extensionId);
+    const existing = await reviewRepo.getReviewForUserAndExtension(
+      data.extensionId,
+      data.userId
+    );
     if (existing.documents.length > 0) {
       return actionResponse(REVIEW_ALREADY_EXISTS);
     }
@@ -95,6 +98,19 @@ export const suspendReview = async (reviewId: string) => {
     }
 
     return actionResponse(REVIEW_SUSPENDED, !!suspended, suspended);
+  } catch (error) {
+    return actionResponse(ERROR_SUSPENDING_REVIEW);
+  }
+};
+
+export const unSuspendReview = async (reviewId: string) => {
+  try {
+    const unSuspended = await reviewRepo.unSuspendReview(reviewId);
+    if (!unSuspended) {
+      return actionResponse(ERROR_SUSPENDING_REVIEW);
+    }
+
+    return actionResponse(REVIEW_SUSPENDED, !!unSuspended, unSuspended);
   } catch (error) {
     return actionResponse(ERROR_SUSPENDING_REVIEW);
   }
