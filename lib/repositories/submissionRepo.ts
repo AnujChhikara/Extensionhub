@@ -17,7 +17,14 @@ export async function createSubmission(data: Submission) {
 // skipping pagination for listing submissions
 export async function listAllSubmissions() {
   return database.listDocuments<SubmissionDocument>(DATABASE_ID, SUBMISSIONS, [
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
+  ]);
+}
+
+export async function getSubmissionById(id: string) {
+  return database.listDocuments<SubmissionDocument>(DATABASE_ID, SUBMISSIONS, [
+    Query.equal('$id', id),
+    Query.limit(1),
   ]);
 }
 

@@ -15,7 +15,21 @@ export async function createReview(data: Review) {
 }
 
 export async function getReview(id: string) {
-  return database.getDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id);
+  return database.listDocuments<ReviewDocument>(DATABASE_ID, REVIEWS, [
+    Query.equal('$id', id),
+    Query.limit(1),
+  ]);
+}
+
+export async function getReviewForUserAndExtension(
+  extensionId: string,
+  userId: string
+) {
+  return database.listDocuments<ReviewDocument>(DATABASE_ID, REVIEWS, [
+    Query.equal('extensionId', extensionId),
+    Query.equal('userId', userId),
+    Query.limit(1),
+  ]);
 }
 
 // skipping pagination in listing
@@ -24,7 +38,7 @@ export async function listReviewForExtensions(extensionId: string) {
     Query.equal('extensionId', extensionId),
     Query.equal('isDeleted', false),
     Query.equal('isSuspended', false),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 
@@ -33,7 +47,7 @@ export async function listReviewForUsers(userId: string) {
     Query.equal('userId', userId),
     Query.equal('isDeleted', false),
     Query.equal('isSuspended', false),
-    Query.orderDesc('updatedAt'),
+    Query.orderDesc('$updatedAt'),
   ]);
 }
 
@@ -56,5 +70,11 @@ export async function deleteReview(id: string) {
 export async function suspendReview(id: string) {
   return database.updateDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id, {
     isSuspended: true,
+  });
+}
+
+export async function unSuspendReview(id: string) {
+  return database.updateDocument<ReviewDocument>(DATABASE_ID, REVIEWS, id, {
+    isSuspended: false,
   });
 }

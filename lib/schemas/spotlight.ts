@@ -6,7 +6,7 @@ export const SpotlightSchema = z
     extensionId: z.string().max(256),
     date: z.date(),
   })
-  .extend(BaseSchema);
+  .extend(BaseSchema.shape);
 
 export type Spotlight = z.infer<typeof SpotlightSchema>;
 export type SpotlightDocument = Spotlight & AppwriteDocument;

@@ -17,7 +17,7 @@ export const ExtensionSchema = z
     isSuspended: z.boolean().optional().default(false),
     isDeleted: z.boolean().optional().default(false),
   })
-  .extend(BaseSchema);
+  .extend(BaseSchema.shape);
 
 export type Extension = z.infer<typeof ExtensionSchema>;
 export type ExtensionDocument = Extension & AppwriteDocument;
