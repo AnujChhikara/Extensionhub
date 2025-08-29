@@ -55,11 +55,11 @@ jobs:
         env:
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          APPWRITE_ENDPOINT: ''
-          APPWRITE_PROJECT_NAME: ''
-          APPWRITE_PROJECT_ID: ''
-          APPWRITE_API_KEY: ''
-          APPWRITE_DATABASE_ID: ''
+          APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
+          APPWRITE_PROJECT_NAME: ${{ secrets.APPWRITE_PROJECT_NAME }}
+          APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+          APPWRITE_DATABASE_ID: ${{ secrets.APPWRITE_DATABASE_ID }}
 
       - name: Type check
         run: pnpm run type-check
