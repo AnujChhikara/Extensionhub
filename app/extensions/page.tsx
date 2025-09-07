@@ -68,6 +68,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ExtensionsPage() {
+export default async function ExtensionsPage() {
   return <ExtensionPage />;
 }

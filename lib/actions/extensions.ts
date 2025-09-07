@@ -119,8 +119,24 @@ export const unSuspendExtension = async (extensionId: string) => {
 
 export const listAllExtensions = async () => {
   try {
-    const reviews = await extensionRepo.listExtensions();
-    return actionResponse(EXTENSIONS_FETCHED, !!reviews, reviews);
+    const extensions = await extensionRepo.listExtensions();
+    return actionResponse(EXTENSIONS_FETCHED, !!extensions, extensions);
+  } catch (error) {
+    return actionResponse(ERROR_LISTING_EXTENSIONS);
+  }
+};
+
+export const getExtensionById = async (extensionId: string) => {
+  try {
+    const extension = await extensionRepo.getExtensionById(extensionId);
+    if (extension.documents.length <= 0) {
+      return actionResponse(EXTENSION_NOT_FOUND);
+    }
+    return actionResponse(
+      EXTENSIONS_FETCHED,
+      !!extension,
+      extension.documents[0]
+    );
   } catch (error) {
     return actionResponse(ERROR_LISTING_EXTENSIONS);
   }
