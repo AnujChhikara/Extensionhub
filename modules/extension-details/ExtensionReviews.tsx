@@ -1,68 +1,120 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Star, ThumbsUp, MessageCircle, Send } from 'lucide-react';
+import {
+  Star,
+  ThumbsUp,
+  MessageCircle,
+  Send,
+  Trash2,
+  Pencil,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { extensionData } from '@/__mock_data__/index';
+import { useUser } from '@clerk/nextjs';
+import {
+  addReviewForExtension,
+  deleteReviewForExtension,
+  listAllExtensionReviews,
+  updateReviewForExtension,
+} from '@/lib/actions/reviews';
 
 interface ExtensionReviewsProps {
   extensionId: string;
 }
 
-const mockReviews = [
-  {
-    id: 1,
-    user: 'John Doe',
-    rating: 5,
-    comment:
-      'Excellent extension! Really helps with my productivity. The interface is clean and intuitive.',
-    date: '2024-01-15',
-    helpful: 12,
-    verified: true,
-  },
-  {
-    id: 2,
-    user: 'Sarah Wilson',
-    rating: 4,
-    comment:
-      'Great functionality, but could use a few more features. Overall very satisfied.',
-    date: '2024-01-10',
-    helpful: 8,
-    verified: false,
-  },
-  {
-    id: 3,
-    user: 'Mike Johnson',
-    rating: 5,
-    comment:
-      'This extension has completely transformed how I work. Highly recommended!',
-    date: '2024-01-08',
-    helpful: 15,
-    verified: true,
-  },
-];
-
 export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
-  const extension = extensionData.find(ext => ext.id === extensionId);
+  const { user, isSignedIn } = useUser();
+  const [reviews, setReviews] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [userRating, setUserRating] = useState(0);
   const [userComment, setUserComment] = useState('');
   const [showReviewForm, setShowReviewForm] = useState(false);
 
-  if (!extension) {
-    return null;
-  }
+  const currentUserId = user?.id ?? null;
 
-  const handleSubmitReview = () => {
-    if (userRating === 0) return;
+  const myReview = useMemo(
+    () => (reviews || []).find(r => r.userId === currentUserId) || null,
+    [reviews, currentUserId]
+  );
 
-    console.log('Submitting review:', {
-      rating: userRating,
-      comment: userComment,
-    });
-    setUserRating(0);
-    setUserComment('');
-    setShowReviewForm(false);
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await listAllExtensionReviews(extensionId);
+      if (result.success) {
+        const docs = (result.data as any)?.documents ?? [];
+        setReviews(docs);
+      } else {
+        setReviews([]);
+        setError(result.message);
+      }
+    } catch (e) {
+      setReviews([]);
+      setError('Failed to load reviews');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+
+    console.log('user: ', user);
+  }, [extensionId]);
+
+  useEffect(() => {
+    if (myReview) {
+      setUserRating(myReview.stars ?? 0);
+      setUserComment(myReview.message ?? '');
+    } else {
+      setUserRating(0);
+      setUserComment('');
+    }
+  }, [myReview]);
+
+  const handleSubmitReview = async () => {
+    if (!isSignedIn || !currentUserId) return;
+    if (userRating === 0 && !myReview) return;
+
+    try {
+      setLoading(true);
+      if (myReview) {
+        await updateReviewForExtension(myReview.$id, {
+          stars: (userRating || null) as any,
+          message: userComment || undefined,
+        } as any);
+      } else {
+        await addReviewForExtension({
+          extensionId,
+          userId: currentUserId,
+          vote: undefined as any,
+          stars: userRating as any,
+          message: userComment || (undefined as any),
+          isSuspended: false,
+          isDeleted: false,
+        } as any);
+      }
+      await fetchReviews();
+      setShowReviewForm(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    if (!myReview) return;
+    try {
+      setLoading(true);
+      await deleteReviewForExtension(myReview.$id);
+      await fetchReviews();
+      setShowReviewForm(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,19 +126,22 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
     >
       <div className='flex items-center justify-between mb-4'>
         <h2 className='text-lg font-semibold text-white'>Reviews</h2>
-        <Button
-          size='sm'
-          variant='outline'
-          className='border-white/20 text-white hover:bg-white hover:text-black'
-          onClick={() => setShowReviewForm(!showReviewForm)}
-        >
-          <MessageCircle className='h-4 w-4 mr-2' />
-          Write Review
-        </Button>
+        {isSignedIn && (
+          <Button
+            size='sm'
+            variant='outline'
+            className='border-white/20 text-white hover:bg-white hover:text-black'
+            onClick={() => setShowReviewForm(!showReviewForm)}
+            disabled={loading}
+          >
+            <MessageCircle className='h-4 w-4 mr-2' />
+            {myReview ? 'Edit Review' : 'Write Review'}
+          </Button>
+        )}
       </div>
 
       {/* Review Form */}
-      {showReviewForm && (
+      {isSignedIn && showReviewForm && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
@@ -94,7 +149,7 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
           className='mb-4 p-3 bg-white/5 rounded-lg border border-white/10'
         >
           <h3 className='text-md font-medium text-white mb-3'>
-            Write a Review
+            {myReview ? 'Update your Review' : 'Write a Review'}
           </h3>
 
           {/* Rating Stars */}
@@ -129,11 +184,24 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
           />
 
           <div className='flex items-center justify-end space-x-3 mt-3'>
+            {myReview && (
+              <Button
+                size='sm'
+                variant='secondary'
+                className='text-white'
+                onClick={handleDeleteReview}
+                disabled={loading}
+              >
+                <Trash2 className='h-4 w-4 mr-2' />
+                Delete
+              </Button>
+            )}
             <Button
               size='sm'
               variant='ghost'
               className='text-gray-400 hover:text-white'
               onClick={() => setShowReviewForm(false)}
+              disabled={loading}
             >
               Cancel
             </Button>
@@ -141,10 +209,14 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
               size='sm'
               className='bg-white text-black hover:bg-gray-100'
               onClick={handleSubmitReview}
-              disabled={userRating === 0}
+              disabled={loading || (!myReview && userRating === 0)}
             >
-              <Send className='h-4 w-4 mr-2' />
-              Submit Review
+              {myReview ? (
+                <Pencil className='h-4 w-4 mr-2' />
+              ) : (
+                <Send className='h-4 w-4 mr-2' />
+              )}
+              {myReview ? 'Update' : 'Submit Review'}
             </Button>
           </div>
         </motion.div>
@@ -152,26 +224,30 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
 
       {/* Reviews List */}
       <div className='space-y-4'>
-        {mockReviews.map(review => (
+        {loading && <p className='text-gray-400 text-sm'>Loading reviews...</p>}
+        {!loading && (reviews?.length ?? 0) === 0 && (
+          <p className='text-gray-400 text-sm'>
+            No reviews yet. Be the first to review!
+          </p>
+        )}
+
+        {(reviews || []).map(review => (
           <div
-            key={review.id}
+            key={review.$id}
             className='border-b border-white/10 pb-4 last:border-b-0'
           >
             <div className='flex items-start justify-between mb-2'>
               <div className='flex items-center space-x-3'>
                 <div className='w-7 h-7 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full flex items-center justify-center text-white text-xs font-medium'>
-                  {review.user.charAt(0)}
+                  {String(review.userId || '?')
+                    .charAt(0)
+                    .toUpperCase()}
                 </div>
                 <div>
                   <div className='flex items-center space-x-2'>
                     <span className='text-white font-medium text-md'>
-                      {review.user}
+                      {review.userId}
                     </span>
-                    {review.verified && (
-                      <span className='text-xs bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded-full'>
-                        Verified
-                      </span>
-                    )}
                   </div>
                   <div className='flex items-center space-x-2 mt-1'>
                     <div className='flex items-center space-x-1'>
@@ -179,7 +255,7 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
                         <Star
                           key={i}
                           className={`h-2.5 w-2.5 ${
-                            i < review.rating
+                            i < (review.stars || 0)
                               ? 'text-yellow-400 fill-current'
                               : 'text-gray-600'
                           }`}
@@ -187,24 +263,35 @@ export function ExtensionReviews({ extensionId }: ExtensionReviewsProps) {
                       ))}
                     </div>
                     <span className='text-xs text-gray-500'>
-                      {new Date(review.date).toLocaleDateString()}
+                      {new Date(
+                        review.$updatedAt || review.$createdAt
+                      ).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
               </div>
+              {review.userId === currentUserId && !showReviewForm && (
+                <Button
+                  size='sm'
+                  variant='ghost'
+                  className='text-gray-400 hover:text-white'
+                  onClick={() => setShowReviewForm(true)}
+                >
+                  <Pencil className='h-4 w-4' />
+                </Button>
+              )}
             </div>
 
-            <p className='text-gray-300 text-md leading-relaxed mb-2'>
-              {review.comment}
-            </p>
+            {review.message && (
+              <p className='text-gray-300 text-md leading-relaxed mb-2'>
+                {review.message}
+              </p>
+            )}
 
             <div className='flex items-center space-x-4'>
               <button className='flex items-center space-x-1 text-gray-400 hover:text-white transition-colors'>
                 <ThumbsUp className='h-3 w-3' />
-                <span className='text-xs'>Helpful ({review.helpful})</span>
-              </button>
-              <button className='text-gray-400 hover:text-white transition-colors text-xs'>
-                Reply
+                <span className='text-xs'>Helpful</span>
               </button>
             </div>
           </div>
