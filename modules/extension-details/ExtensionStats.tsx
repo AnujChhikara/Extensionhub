@@ -1,25 +1,62 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Download, Eye, Heart, Bookmark, Calendar } from 'lucide-react';
-import { extensionData } from '@/__mock_data__/index';
+import {
+  Star,
+  Download,
+  Eye,
+  Heart,
+  Bookmark,
+  Calendar,
+  Shield,
+} from 'lucide-react';
+import { getExtensionById } from '@/lib/actions/extensions';
+import { ExtensionDocument } from '@/lib/schemas/extensions';
 
 interface ExtensionStatsProps {
   extensionId: string;
 }
 
 export function ExtensionStats({ extensionId }: ExtensionStatsProps) {
-  const extension = extensionData.find(ext => ext.id === extensionId);
+  const [extension, setExtension] = useState<ExtensionDocument | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchExtension = async () => {
+      try {
+        setLoading(true);
+        const result = await getExtensionById(extensionId);
+
+        if (result.success && result.data) {
+          setExtension(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to load extension stats:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExtension();
+  }, [extensionId]);
+
+  if (loading) {
+    return (
+      <div className='animate-pulse bg-card rounded-xl border border-border p-6'>
+        <div className='h-6 bg-gray-200 rounded mb-4'></div>
+        <div className='space-y-3'>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className='h-4 bg-gray-200 rounded'></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!extension) {
     return null;
   }
-
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
 
   const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -29,111 +66,91 @@ export function ExtensionStats({ extensionId }: ExtensionStatsProps) {
     });
   };
 
+  const stats = [
+    {
+      icon: Star,
+      label: 'Rating',
+      value: 'N/A',
+      color: 'text-yellow-500',
+    },
+    {
+      icon: Download,
+      label: 'Downloads',
+      value: 'N/A',
+      color: 'text-blue-500',
+    },
+    {
+      icon: Calendar,
+      label: 'Last Updated',
+      value: formatDate(extension.$updatedAt),
+      color: 'text-green-500',
+    },
+    {
+      icon: Calendar,
+      label: 'Created',
+      value: formatDate(extension.$createdAt),
+      color: 'text-purple-500',
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
+      className='bg-card rounded-xl border border-border p-6'
     >
-      <h2 className='text-xl font-semibold text-white mb-6'>Statistics</h2>
+      <h3 className='text-lg font-semibold mb-6'>Extension Stats</h3>
 
-      {/* Rating Breakdown */}
-      <div className='mb-6'>
-        <h3 className='text-lg font-medium text-white mb-4'>
-          Rating Breakdown
-        </h3>
-        <div className='space-y-3'>
-          {[5, 4, 3, 2, 1].map(rating => {
-            const count =
-              extension.ratingDistribution[
-                rating.toString() as keyof typeof extension.ratingDistribution
-              ] || 0;
-            const percentage =
-              extension.totalReviews > 0
-                ? (count / extension.totalReviews) * 100
-                : 0;
-
-            return (
-              <div key={rating} className='flex items-center space-x-3'>
-                <div className='flex items-center space-x-1 w-8'>
-                  <span className='text-sm text-gray-400'>{rating}</span>
-                  <Star className='h-3 w-3 text-yellow-400 fill-current' />
-                </div>
-                <div className='flex-1 bg-gray-800 rounded-full h-2'>
-                  <div
-                    className='bg-yellow-400 h-2 rounded-full'
-                    style={{ width: `${percentage}%` }}
-                  ></div>
-                </div>
-                <span className='text-sm text-gray-400 w-12 text-right'>
-                  {count}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Key Stats */}
       <div className='space-y-4'>
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Eye className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-300'>Views</span>
-          </div>
-          <span className='text-white font-medium'>
-            {formatNumber(extension.views)}
-          </span>
-        </div>
-
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Heart className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-300'>Likes</span>
-          </div>
-          <span className='text-white font-medium'>
-            {formatNumber(extension.likes)}
-          </span>
-        </div>
-
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Bookmark className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-300'>Bookmarks</span>
-          </div>
-          <span className='text-white font-medium'>
-            {formatNumber(extension.bookmarks)}
-          </span>
-        </div>
-
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Download className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-300'>Downloads</span>
-          </div>
-          <span className='text-white font-medium'>
-            {formatNumber(extension.views)}
-          </span>
-        </div>
+        {stats.map((stat, index) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className='flex items-center justify-between py-2'
+          >
+            <div className='flex items-center gap-3'>
+              <stat.icon className={`w-5 h-5 ${stat.color}`} />
+              <span className='text-sm font-medium'>{stat.label}</span>
+            </div>
+            <span className='text-sm text-muted-foreground font-mono'>
+              {stat.value}
+            </span>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Dates */}
-      <div className='mt-6 pt-6 border-t border-white/10 space-y-3'>
-        <div className='flex items-center justify-between'>
-          <div className='flex items-center space-x-2'>
-            <Calendar className='h-4 w-4 text-gray-400' />
-            <span className='text-gray-300'>Last Updated</span>
+      {extension.appPermissions && extension.appPermissions.length > 0 && (
+        <div className='mt-6 pt-6 border-t border-border'>
+          <h4 className='text-sm font-semibold mb-3 flex items-center gap-2'>
+            <Shield className='w-4 h-4 text-orange-500' />
+            Permissions
+          </h4>
+          <div className='space-y-2'>
+            {extension.appPermissions.map((permission, index) => (
+              <div
+                key={index}
+                className='text-xs text-muted-foreground bg-muted/50 rounded px-2 py-1'
+              >
+                {permission}
+              </div>
+            ))}
           </div>
-          <span className='text-white text-sm'>
-            {formatDate(extension.lastUpdated)}
-          </span>
         </div>
+      )}
 
-        <div className='flex items-center justify-between'>
-          <span className='text-gray-300'>Submitted</span>
-          <span className='text-white text-sm'>
-            {formatDate(extension.submissionDate)}
+      <div className='mt-6 pt-6 border-t border-border'>
+        <div className='flex items-center justify-between text-xs text-muted-foreground'>
+          <span>Status</span>
+          <span
+            className={`px-2 py-1 rounded ${
+              extension.isSuspended
+                ? 'bg-red-100 text-red-800'
+                : 'bg-green-100 text-green-800'
+            }`}
+          >
+            {extension.isSuspended ? 'Suspended' : 'Active'}
           </span>
         </div>
       </div>

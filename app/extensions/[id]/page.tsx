@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ExtensionDetailsPage } from '@/modules/extension-details';
-import { getExtensionById } from '@/__mock_data__';
+import { getExtensionById } from '@/lib/actions/extensions';
 
 interface ExtensionPageProps {
   params: { id: string };
@@ -9,9 +9,9 @@ interface ExtensionPageProps {
 export async function generateMetadata({
   params,
 }: ExtensionPageProps): Promise<Metadata> {
-  const extension = getExtensionById(params.id);
+  const result = await getExtensionById(params.id);
 
-  if (!extension) {
+  if (!result.success || !result.data) {
     return {
       title: 'Extension Not Found - ExtensionSpot',
       description: 'The requested Chrome extension could not be found.',
@@ -22,22 +22,24 @@ export async function generateMetadata({
     };
   }
 
+  const extension = result.data;
+
   return {
     title: `${extension.name} - Chrome Extension | ExtensionSpot`,
     description:
-      extension.shortDescription.substring(0, 160) +
-      (extension.shortDescription.length > 160 ? '...' : ''),
+      extension.description.substring(0, 160) +
+      (extension.description.length > 160 ? '...' : ''),
     keywords: [
       extension.name,
       'Chrome extension',
-      ...extension.category,
-      ...extension.tags,
+      ...(extension.tags || []),
+      ...(extension.labels || []),
       'browser extension',
       'productivity tool',
       'ExtensionSpot',
     ],
-    authors: [{ name: extension.developer.name }],
-    creator: extension.developer.name,
+    authors: [{ name: extension.developer || 'Unknown Developer' }],
+    creator: extension.developer || 'Unknown Developer',
     publisher: 'ExtensionSpot',
     formatDetection: {
       email: false,
@@ -51,13 +53,13 @@ export async function generateMetadata({
     openGraph: {
       title: `${extension.name} - Chrome Extension`,
       description:
-        extension.shortDescription.substring(0, 160) +
-        (extension.shortDescription.length > 160 ? '...' : ''),
+        extension.description.substring(0, 160) +
+        (extension.description.length > 160 ? '...' : ''),
       url: `https://extensionspot.com/extensions/${params.id}`,
       siteName: 'ExtensionSpot',
       images: [
         {
-          url: extension.logo || '/default-extension-logo.png',
+          url: extension.media?.[0] || '/default-extension-logo.png',
           width: 512,
           height: 512,
           alt: `${extension.name} logo`,
@@ -70,9 +72,9 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: `${extension.name} - Chrome Extension`,
       description:
-        extension.shortDescription.substring(0, 160) +
-        (extension.shortDescription.length > 160 ? '...' : ''),
-      images: [extension.logo || '/default-extension-logo.png'],
+        extension.description.substring(0, 160) +
+        (extension.description.length > 160 ? '...' : ''),
+      images: [extension.media?.[0] || '/default-extension-logo.png'],
       creator: '@extensionspot',
       site: '@extensionspot',
     },
@@ -86,12 +88,6 @@ export async function generateMetadata({
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
-    },
-    other: {
-      'extension:rating': extension.averageRating.toString(),
-      'extension:downloads': extension.views.toString(),
-      'extension:version': extension.version,
-      'extension:developer': extension.developer.name,
     },
   };
 }

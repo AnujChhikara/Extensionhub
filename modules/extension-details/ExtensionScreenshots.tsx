@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Image } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { extensionData } from '@/__mock_data__/index';
+import { getExtensionById } from '@/lib/actions/extensions';
+import { ExtensionDocument } from '@/lib/schemas/extensions';
 
 interface ExtensionScreenshotsProps {
   extensionId: string;
@@ -13,37 +14,66 @@ interface ExtensionScreenshotsProps {
 export function ExtensionScreenshots({
   extensionId,
 }: ExtensionScreenshotsProps) {
-  const extension = extensionData.find(ext => ext.id === extensionId);
+  const [extension, setExtension] = useState<ExtensionDocument | null>(null);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  if (
-    !extension ||
-    !extension.screenshots ||
-    extension.screenshots.length === 0
-  ) {
+  useEffect(() => {
+    const fetchExtension = async () => {
+      try {
+        setLoading(true);
+        const result = await getExtensionById(extensionId);
+
+        if (result.success && result.data) {
+          setExtension(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to load extension screenshots:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExtension();
+  }, [extensionId]);
+
+  if (loading) {
+    return (
+      <div className='animate-pulse bg-card rounded-xl border border-border p-8'>
+        <div className='h-6 bg-gray-200 rounded mb-4'></div>
+        <div className='h-64 bg-gray-200 rounded'></div>
+      </div>
+    );
+  }
+
+  if (!extension || !extension.media || extension.media.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-8'
+        className='bg-card rounded-xl border border-border p-8'
       >
-        <h2 className='text-xl font-semibold text-white mb-4'>Screenshots</h2>
-        <div className='aspect-video bg-white/5 rounded-lg flex items-center justify-center'>
-          <p className='text-gray-400'>No screenshots available</p>
+        <h2 className='text-xl font-semibold mb-6'>Screenshots</h2>
+        <div className='flex flex-col items-center justify-center py-16 text-muted-foreground'>
+          <Image className='w-12 h-12 mb-4' />
+          <p className='text-lg mb-2'>No screenshots available</p>
+          <p className='text-sm text-center'>
+            Screenshots will be displayed here once they are uploaded by the
+            developer.
+          </p>
         </div>
       </motion.div>
     );
   }
 
-  const nextSlide = () => {
-    setCurrentIndex(prev => (prev + 1) % extension.screenshots.length);
+  const nextImage = () => {
+    setCurrentIndex(prev => (prev + 1) % extension.media!.length);
   };
 
-  const prevSlide = () => {
+  const prevImage = () => {
     setCurrentIndex(
-      prev =>
-        (prev - 1 + extension.screenshots.length) % extension.screenshots.length
+      prev => (prev - 1 + extension.media!.length) % extension.media!.length
     );
   };
 
@@ -52,78 +82,70 @@ export function ExtensionScreenshots({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
+      className='bg-card rounded-xl border border-border p-6'
     >
-      <div className='flex items-center justify-between mb-4'>
-        <h2 className='text-xl font-semibold text-white'>Screenshots</h2>
-        <div className='flex items-center space-x-2'>
-          <span className='text-sm text-gray-400'>
-            {currentIndex + 1} of {extension.screenshots.length}
-          </span>
-        </div>
-      </div>
+      <h2 className='text-xl font-semibold mb-6'>Screenshots</h2>
 
-      {/* Main Screenshot */}
-      <div className='relative mb-3'>
-        <div className='aspect-video bg-white/5 rounded-lg overflow-hidden'>
-          <div className='w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center'>
-            <div className='text-center'>
-              <div className='w-12 h-12 bg-white/10 rounded-lg mx-auto mb-3 flex items-center justify-center'>
-                <Maximize2 className='h-6 w-6 text-white' />
-              </div>
-              <p className='text-white font-medium'>
-                Screenshot {currentIndex + 1}
-              </p>
-              <p className='text-gray-400 text-sm mt-1'>
-                Demo of {extension.name}
-              </p>
-            </div>
-          </div>
+      <div className='relative group'>
+        <div className='aspect-video bg-muted rounded-lg overflow-hidden'>
+          <img
+            src={extension.media[currentIndex]}
+            alt={`${extension.name} screenshot ${currentIndex + 1}`}
+            className='w-full h-full object-cover'
+          />
         </div>
 
-        {/* Navigation Buttons */}
-        {extension.screenshots.length > 1 && (
+        {extension.media.length > 1 && (
           <>
             <Button
-              size='sm'
               variant='outline'
-              className='absolute left-4 top-1/2 transform -translate-y-1/2 border-white/20 text-white hover:bg-white hover:text-black'
-              onClick={prevSlide}
+              size='sm'
+              onClick={prevImage}
+              className='absolute left-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'
             >
-              <ChevronLeft className='h-4 w-4' />
+              <ChevronLeft className='w-4 h-4' />
             </Button>
             <Button
-              size='sm'
               variant='outline'
-              className='absolute right-4 top-1/2 transform -translate-y-1/2 border-white/20 text-white hover:bg-white hover:text-black'
-              onClick={nextSlide}
+              size='sm'
+              onClick={nextImage}
+              className='absolute right-2 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity'
             >
-              <ChevronRight className='h-4 w-4' />
+              <ChevronRight className='w-4 h-4' />
             </Button>
           </>
         )}
+
+        <Button
+          variant='outline'
+          size='sm'
+          className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'
+          onClick={() => {
+            // Open image in new tab
+            window.open(extension.media![currentIndex], '_blank');
+          }}
+        >
+          <Maximize2 className='w-4 h-4' />
+        </Button>
       </div>
 
-      {/* Thumbnail Navigation */}
-      {extension.screenshots.length > 1 && (
-        <div className='flex space-x-2 overflow-x-auto pb-2'>
-          {extension.screenshots.map((_, index) => (
+      {extension.media.length > 1 && (
+        <div className='flex justify-center mt-4 gap-2'>
+          {extension.media.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`flex-shrink-0 w-20 h-12 rounded-lg border-2 transition-all ${
-                index === currentIndex
-                  ? 'border-white bg-white/10'
-                  : 'border-white/20 bg-white/5 hover:border-white/40'
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentIndex ? 'bg-primary' : 'bg-muted'
               }`}
-            >
-              <div className='w-full h-full bg-gradient-to-br from-gray-600 to-gray-800 rounded flex items-center justify-center'>
-                <span className='text-xs text-white'>{index + 1}</span>
-              </div>
-            </button>
+            />
           ))}
         </div>
       )}
+
+      <div className='mt-4 text-sm text-muted-foreground text-center'>
+        {currentIndex + 1} of {extension.media.length}
+      </div>
     </motion.div>
   );
 }
