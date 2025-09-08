@@ -16,8 +16,11 @@ import {
   VALIDATION_ERROR,
 } from '@/lib/constants/message';
 import * as extensionRepo from '@/lib/repositories/extensionRepo';
-import { ExtensionSchema } from '@/lib/schemas/extensions';
+import { ExtensionDocument, ExtensionSchema } from '@/lib/schemas/extensions';
 import { actionResponse } from '@/lib/utils';
+import { Extension } from '../../types/extension';
+import type { ActionResponse } from '@/lib/utils';
+import type { Models } from 'node-appwrite';
 
 interface addExtensionDTO {
   name: string;
@@ -117,7 +120,9 @@ export const unSuspendExtension = async (extensionId: string) => {
   }
 };
 
-export const listAllExtensions = async () => {
+export const listAllExtensions = async (): Promise<
+  ActionResponse<Models.DocumentList<ExtensionDocument>>
+> => {
   try {
     const extensions = await extensionRepo.listExtensions();
     return actionResponse(EXTENSIONS_FETCHED, !!extensions, extensions);
@@ -126,7 +131,9 @@ export const listAllExtensions = async () => {
   }
 };
 
-export const getExtensionById = async (extensionId: string) => {
+export const getExtensionById = async (
+  extensionId: string
+): Promise<ActionResponse<ExtensionDocument>> => {
   try {
     const extension = await extensionRepo.getExtensionById(extensionId);
     if (extension.documents.length <= 0) {

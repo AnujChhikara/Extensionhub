@@ -5,10 +5,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function actionResponse(
+export type ActionResponse<T> = {
+  message: string;
+  success: boolean;
+  data: T | null;
+};
+
+export function actionResponse<T>(
   message: string,
   success: boolean = false,
-  data: unknown = null
-) {
+  data: T | null = null
+): ActionResponse<T> {
   return { message, success, data };
 }

@@ -99,7 +99,7 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
           </div>
 
           <div className='flex flex-wrap gap-4'>
-            <Button asChild>
+            <Button>
               <a
                 href={extension.extensionLink}
                 target='_blank'
@@ -112,7 +112,7 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
             </Button>
 
             {extension.websiteLink && (
-              <Button variant='outline' asChild>
+              <Button variant='outline'>
                 <a
                   href={extension.websiteLink}
                   target='_blank'
@@ -126,7 +126,7 @@ export function ExtensionHeader({ extensionId }: ExtensionHeaderProps) {
             )}
 
             {extension.githubLink && (
-              <Button variant='outline' asChild>
+              <Button variant='outline'>
                 <a
                   href={extension.githubLink}
                   target='_blank'
