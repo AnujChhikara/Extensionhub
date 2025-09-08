@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { extensionData } from '@/__mock_data__/index';
+import { getExtensionById } from '@/lib/actions/extensions';
+import { ExtensionDocument } from '@/lib/schemas/extensions';
 
 interface ExtensionDescriptionProps {
   extensionId: string;
@@ -10,7 +12,40 @@ interface ExtensionDescriptionProps {
 export function ExtensionDescription({
   extensionId,
 }: ExtensionDescriptionProps) {
-  const extension = extensionData.find(ext => ext.id === extensionId);
+  const [extension, setExtension] = useState<ExtensionDocument | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchExtension = async () => {
+      try {
+        setLoading(true);
+        const result = await getExtensionById(extensionId);
+
+        if (result.success && result.data) {
+          setExtension(result.data);
+        }
+      } catch (err) {
+        console.error('Failed to load extension description:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExtension();
+  }, [extensionId]);
+
+  if (loading) {
+    return (
+      <div className='animate-pulse bg-card rounded-xl border border-border p-6'>
+        <div className='h-6 bg-gray-200 rounded mb-4'></div>
+        <div className='space-y-3'>
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className='h-4 bg-gray-200 rounded'></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!extension) {
     return null;
@@ -21,53 +56,45 @@ export function ExtensionDescription({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className='bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4'
+      className='bg-card rounded-xl border border-border p-6'
     >
-      <h2 className='text-xl font-semibold text-white mb-6'>
-        About this extension
-      </h2>
+      <h2 className='text-xl font-semibold mb-6'>About this extension</h2>
 
-      {/* Full Description */}
-      <div className='prose prose-invert max-w-none mb-8'>
-        <p className='text-gray-300 leading-relaxed text-base'>
-          {extension.fullDescription}
-        </p>
+      <div className='prose prose-sm max-w-none text-muted-foreground'>
+        <p className='leading-relaxed'>{extension.description}</p>
       </div>
 
-      {/* Tags */}
-      <div className='mb-6'>
-        <h3 className='text-lg font-medium text-white mb-3'>Tags</h3>
-        <div className='flex flex-wrap gap-2'>
-          {extension.tags.map((tag, index) => (
-            <span
-              key={index}
-              className='text-sm text-gray-300 bg-white/5 px-3 py-1.5 rounded-full border border-white/10'
-            >
-              {tag}
-            </span>
-          ))}
+      {extension.tags && extension.tags.length > 0 && (
+        <div className='mt-6 pt-6 border-t border-border'>
+          <h3 className='text-sm font-semibold mb-3'>Tags</h3>
+          <div className='flex flex-wrap gap-2'>
+            {extension.tags.map(tag => (
+              <span
+                key={tag}
+                className='px-2 py-1 bg-secondary/50 text-secondary-foreground rounded text-xs'
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Permissions */}
-      <div>
-        <h3 className='text-lg font-medium text-white mb-3'>Permissions</h3>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-          {extension.permissions.map((permission, index) => (
-            <div
-              key={index}
-              className='flex items-center space-x-2 text-sm text-gray-300'
-            >
-              <div className='w-2 h-2 bg-gray-500 rounded-full'></div>
-              <span>{permission}</span>
-            </div>
-          ))}
+      {extension.labels && extension.labels.length > 0 && (
+        <div className='mt-4'>
+          <h3 className='text-sm font-semibold mb-3'>Labels</h3>
+          <div className='flex flex-wrap gap-2'>
+            {extension.labels.map(label => (
+              <span
+                key={label}
+                className='px-2 py-1 bg-primary/10 text-primary rounded text-xs border border-primary/20'
+              >
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
-        <p className='text-xs text-gray-500 mt-2'>
-          This extension requires these permissions to function properly. You
-          can review and manage permissions in your browser settings.
-        </p>
-      </div>
+      )}
     </motion.div>
   );
 }

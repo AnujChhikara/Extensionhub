@@ -18,6 +18,7 @@ import {
 import * as reviewRepo from '@/lib/repositories/reviewRepo';
 import { ReviewSchema } from '@/lib/schemas/reviews';
 import { actionResponse } from '@/lib/utils';
+import * as extensionRepo from '@/lib/repositories/extensionRepo';
 
 interface addReviewDTO {
   extensionId: string;
@@ -36,6 +37,14 @@ export const addReviewForExtension = async (data: addReviewDTO) => {
   }
 
   try {
+    const ext = await extensionRepo.getExtensionById(data.extensionId);
+    if (ext.documents.length > 0) {
+      const ownerUserId = (ext.documents[0] as any).userId;
+      if (ownerUserId && ownerUserId === data.userId) {
+        return actionResponse(VALIDATION_ERROR);
+      }
+    }
+
     const existing = await reviewRepo.getReviewForUserAndExtension(
       data.extensionId,
       data.userId

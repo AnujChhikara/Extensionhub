@@ -1,5 +1,3 @@
-'use client';
-
 import { ExtensionHeader } from './ExtensionHeader';
 import { ExtensionFilters } from './ExtensionFilters';
 import { ExtensionGrid } from './ExtensionGrid';
